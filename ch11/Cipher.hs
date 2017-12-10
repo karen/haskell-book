@@ -1,4 +1,7 @@
+module Cipher where
+
 import Data.Char
+import Test.QuickCheck
 
 data CipherType = Encrypt | Decrypt
     deriving (Eq, Show)
@@ -13,6 +16,7 @@ unCaesar n x = caesarHelper n x Decrypt
 
 caesarHelper :: Int -> String -> CipherType -> String
 caesarHelper _ [] _ = []
+caesarHelper n (' ':xs) ctype = ' ' : caesarHelper n xs ctype
 caesarHelper n (x:xs) ctype = chr (ord base + (mod (offset ctype x base n) 26)) : caesarHelper n xs ctype where
     base = if compare x 'a' /= LT then 'a' else 'A'
 
@@ -56,3 +60,11 @@ capitalizeParagraph w = go w True where
     go (' ':xs) True = ' ' : go xs True
     go (x:xs) True = toUpper x : go xs False
     go (x:xs) False = x : go xs False
+
+testCaesar' :: Int -> Bool
+testCaesar' =
+    (\x -> (unCaesar x $ caesar x "Hello World") == "Hello World")
+
+testCaesar :: IO ()
+testCaesar = do
+    quickCheck testCaesar'
