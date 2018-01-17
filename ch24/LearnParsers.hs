@@ -32,6 +32,9 @@ str12 = string "12"
 str123 :: Parser String
 str123 = string "123"
 
+anyOf :: Parser String
+anyOf = string "123" <|> string "12" <|> string "1"
+
 string' :: String -> Parser String
 string' [] = return []
 string' (x:xs) = do
