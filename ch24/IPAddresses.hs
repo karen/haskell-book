@@ -32,11 +32,14 @@ parseIPv6 = do
 extractHi :: [String] -> [String]
 extractHi = take 4 . takeWhile (/= "")
 
+padr :: Int -> [String] -> [String]
+padr n s = if length s >= n then s else padr n (s ++ ["0"])
+
 padl :: Int -> [String] -> [String]
 padl n s = if length s >= n then s else padl n ("0" : s)
 
-padr :: Int -> [String] -> [String]
-padr n s = if length s >= n then s else padr n (s ++ ["0"])
+hex :: Parser Char
+hex = oneOf "0123456789ABCDEFabcdef"
 
 strsToWords :: [String] -> Word64
 strsToWords s = numsToWord (map hexToNum s)
@@ -55,12 +58,6 @@ hexToDigit x = fromIntegral $ (ord x - ord '0')
 
 numsToWord :: [Integer] -> Word64
 numsToWord = fromInteger . foldl (\acc x -> acc * (2^16) + x) 0
-
-hexdigits :: String
-hexdigits = "0123456789ABCDEFabcdef"
-
-hex :: Parser Char
-hex = oneOf hexdigits
 
 ipToWord :: Integer -> Integer -> Integer -> Integer -> Word32
 ipToWord w x y z = fromInteger $ z + y * 256 + x * 256 * 256 + w * 256 * 256 * 256
