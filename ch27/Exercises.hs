@@ -15,4 +15,3 @@ repeat' x = xs where xs = (Cons x xs)
 
 main = do
     print $ take' 10 $ map' (+1) (repeat' 1)
-
