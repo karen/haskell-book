@@ -37,6 +37,8 @@ instance Functor (K a) where
 -- Flip :: (* -> * -> *) -> * -> * -> *
 -- Data Constructor Flip takes 1 argument
 -- Flip :: f b a -> Flip f a b
+-- View (f b a) as one value, i.e. we match on Flip x
+-- f is a function that takes in two arguments
 newtype Flip f a b =
     Flip (f b a)
     deriving (Eq, Show)
